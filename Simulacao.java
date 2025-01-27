@@ -12,7 +12,7 @@ public class Simulacao {
      os caminhoes e carretos SEMPRE ocuparão um X ímpar
     */
     public Simulacao() {
-        Random rand = new Random(12345);
+        Random rand = new Random();
         mapa = new Mapa();
         int largura = mapa.getLargura(); // Igual a 34
         int altura = mapa.getAltura();  // Igual a 34
