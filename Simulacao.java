@@ -1,62 +1,80 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-/**
- * Responsavel pela simulacao.
- * @author David J. Barnes and Michael Kolling and Luiz Merschmann
- */
+
 public class Simulacao {
-    private Veiculo veiculo;
+    private List<Veiculo> veiculos; // Lista de veículos ativos
     private JanelaSimulacao janelaSimulacao;
     private Mapa mapa;
-    
-    /*@DaviGomides Alterei o construtor para iniciar sempre da "posicao inicial" no eixo Y, variando apenas o eixo X, onde
-     os caminhoes e carretos SEMPRE ocuparão um X ímpar
-    */
+    private Random rand;
+    private int tempoParaNovoVeiculo; // Contador para gerar novos veículos
+
     public Simulacao() {
-        Random rand = new Random();
+        rand = new Random();
         mapa = new Mapa();
-        int largura = mapa.getLargura(); // Igual a 34
-        int altura = mapa.getAltura();  // Igual a 34
-    
-        // Gerar posição inicial no eixo X (apenas números ímpares entre 1 e 33)
-        int xInicial = 1 + 2 * rand.nextInt(largura / 2); // (1, 3, 5, ..., 33)
-    
-        // Definir o eixo Y na posição inicial mais baixa
-        int yInicial = altura - 1;
-    
-        // Criar o veículo na posição inicial (X ímpar, Y mais baixo)
-        veiculo = new Veiculo(new Localizacao(xInicial, yInicial));
-    
-        // Definir uma posição destino aleatória no mapa
-        veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)));
-    
-        // Adicionar o veículo ao mapa
-        mapa.adicionarItem(veiculo);
-    
-        // Inicializar a janela da simulação
+        veiculos = new ArrayList<>();
         janelaSimulacao = new JanelaSimulacao(mapa);
+        tempoParaNovoVeiculo = 0; // Inicializa o contador
     }
-    
-    public void executarSimulacao(int numPassos){
-        janelaSimulacao.executarAcao();
+
+    public void executarSimulacao(int numPassos) {
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
-            esperar(100);
-        }        
+            esperar(100); // Espera 100 ms entre cada passo
+        }
     }
 
     private void executarUmPasso() {
-        mapa.removerItem(veiculo);
-        veiculo.executarAcao();
-        mapa.adicionarItem(veiculo);
+        // Gera um novo veículo a cada segundo (10 passos, considerando 100 ms por passo)
+        if (tempoParaNovoVeiculo == 0) {
+            gerarNovoVeiculo();
+            tempoParaNovoVeiculo = 10; // Reinicia o contador (1 segundo)
+        } else {
+            tempoParaNovoVeiculo--;
+        }
+
+        // Atualiza a posição de todos os veículos
+        for (int i = veiculos.size() - 1; i >= 0; i--) {
+            Veiculo veiculo = veiculos.get(i);
+            mapa.removerItem(veiculo); // Remove o veículo do mapa temporariamente
+
+            if (veiculo.deveSerRemovido()) {
+                // Remove o veículo da lista e do mapa
+                veiculos.remove(i);
+            } else {
+                // Atualiza a posição do veículo
+                veiculo.executarAcao();
+                mapa.adicionarItem(veiculo); // Adiciona o veículo de volta ao mapa
+            }
+        }
+
+        // Atualiza a visualização
         janelaSimulacao.executarAcao();
     }
-    
-    private void esperar(int milisegundos){
-        try{
+
+    private void gerarNovoVeiculo() {
+        int largura = mapa.getLargura();
+        int altura = mapa.getAltura();
+
+        // Gera uma posição inicial no eixo X (apenas números ímpares entre 1 e 33)
+        int xInicial = 1 + 2 * rand.nextInt(largura / 2); // (1, 3, 5, ..., 33)
+
+        // Define o eixo Y na posição inicial mais baixa
+        int yInicial = altura - 1;
+
+        // Cria o veículo na posição inicial (X ímpar, Y mais baixo)
+        Veiculo novoVeiculo = new Veiculo(new Localizacao(xInicial, yInicial));
+
+        // Adiciona o veículo à lista e ao mapa
+        veiculos.add(novoVeiculo);
+        mapa.adicionarItem(novoVeiculo);
+    }
+
+    private void esperar(int milisegundos) {
+        try {
             Thread.sleep(milisegundos);
-        }catch(InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
     }
-    
 }

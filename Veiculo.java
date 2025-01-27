@@ -9,38 +9,41 @@ public class Veiculo {
     private Localizacao localizacaoAtual;
     private Localizacao localizacaoDestino;
     private Image imagem;
+    private boolean deveSerRemovido;
 
     public Veiculo(Localizacao localizacao) {
         this.localizacaoAtual = localizacao;
-        localizacaoDestino = null;
-        imagem = new ImageIcon(getClass().getResource("Imagens/veiculo.png")).getImage();
+        this.localizacaoDestino = new Localizacao(localizacao.getX(), 0); // Destino fixo: y = 0
+        this.imagem = new ImageIcon(getClass().getResource("Imagens/veiculo.png")).getImage();
+        this.deveSerRemovido = false;
     }
 
     public Localizacao getLocalizacaoAtual() {
         return localizacaoAtual;
     }
 
-    public Localizacao getLocalizacaoDestino() {
-        return localizacaoDestino;
-    }
-    
-    public Image getImagem(){
-        return imagem;
-    }
-
     public void setLocalizacaoAtual(Localizacao localizacaoAtual) {
         this.localizacaoAtual = localizacaoAtual;
     }
 
-    public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
-        this.localizacaoDestino = localizacaoDestino;
+    public Localizacao getLocalizacaoDestino() {
+        return localizacaoDestino;
     }
-    
-    public void executarAcao(){
-        Localizacao destino = getLocalizacaoDestino();
-        if(destino != null){
-            Localizacao proximaLocalizacao = getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
+
+    public Image getImagem() {
+        return imagem;
+    }
+
+    public boolean deveSerRemovido() {
+        return deveSerRemovido;
+    }
+
+    public void executarAcao() {
+        if (localizacaoAtual.getY() == 0) {
+            deveSerRemovido = true;
+        } else {
+            Localizacao proximaLocalizacao = localizacaoAtual.proximaLocalizacao(localizacaoDestino);
             setLocalizacaoAtual(proximaLocalizacao);
         }
-    } 
+    }
 }
