@@ -15,6 +15,14 @@ public class Simulacao {
         veiculos = new ArrayList<>();
         janelaSimulacao = new JanelaSimulacao(mapa);
         tempoParaNovoVeiculo = 0; // Inicializa o contador
+
+        adicionarPontosAbastecimento();
+    }
+
+    private void adicionarPontosAbastecimento() {
+        // Exemplo: Adiciona pontos de abastecimento em posições fixas
+        for (int i = 1; i < 35; i = i + 2)
+            mapa.adicionarPontoAbastecimento(new PontoAbastecimento(new Localizacao(i, 0)));
     }
 
     public void executarSimulacao(int numPassos) {
@@ -25,7 +33,8 @@ public class Simulacao {
     }
 
     private void executarUmPasso() {
-        // Gera um novo veículo a cada segundo (10 passos, considerando 100 ms por passo)
+        // Gera um novo veículo a cada segundo (10 passos, considerando 100 ms por
+        // passo)
         if (tempoParaNovoVeiculo == 0) {
             gerarNovoVeiculo();
             tempoParaNovoVeiculo = 10; // Reinicia o contador (1 segundo)
@@ -43,7 +52,7 @@ public class Simulacao {
                 veiculos.remove(i);
             } else {
                 // Atualiza a posição do veículo
-                veiculo.executarAcao();
+                veiculo.executarAcao(mapa); // Passa o mapa para verificar colisões
                 mapa.adicionarItem(veiculo); // Adiciona o veículo de volta ao mapa
             }
         }
@@ -63,7 +72,15 @@ public class Simulacao {
         int yInicial = altura - 1;
 
         // Cria o veículo na posição inicial (X ímpar, Y mais baixo)
-        Veiculo novoVeiculo = new Veiculo(new Localizacao(xInicial, yInicial));
+        Veiculo novoVeiculo;
+
+        // Se o número aleatório for menor que 0.5, cria um Carreto, senão cria um
+        // Caminhao
+        if (rand.nextDouble() < 0.5) {
+            novoVeiculo = new Carreto(new Localizacao(xInicial, yInicial)); // Instanciando Carreto
+        } else {
+            novoVeiculo = new Caminhao(new Localizacao(xInicial, yInicial)); // Instanciando Caminhao
+        }
 
         // Adiciona o veículo à lista e ao mapa
         veiculos.add(novoVeiculo);
