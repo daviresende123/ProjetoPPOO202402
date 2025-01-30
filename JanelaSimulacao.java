@@ -2,14 +2,23 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * Fornece a visualizacao da simulacao
+ * Fornece a visualização da simulação.
+ * Esta classe representa a janela gráfica onde o mapa e os veículos são exibidos.
  * 
- * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * @author Davi Gomides, João Ramalho, Eduardo Gomes
+ * @version 1.0
  */
+
 public class JanelaSimulacao extends JFrame {
     private Mapa mapa;
     private VisaoMapa visaoMapa;
 
+    /**
+     * Construtor da classe JanelaSimulacao.
+     * Inicializa a janela e configura a exibição do mapa.
+     * 
+     * @param mapa O mapa que será exibido na simulação.
+     */
     public JanelaSimulacao(Mapa mapa) {
         this.mapa = mapa;
         visaoMapa = new VisaoMapa(mapa.getLargura(), mapa.getAltura());
@@ -21,7 +30,8 @@ public class JanelaSimulacao extends JFrame {
     }
 
     /**
-     * Mostra o estado atual do mapa.
+     * Atualiza a exibição do mapa na simulação.
+     * Renderiza os pontos de abastecimento e os veículos presentes no mapa.
      */
     public void executarAcao() {
         visaoMapa.preparePaint();
@@ -47,10 +57,11 @@ public class JanelaSimulacao extends JFrame {
     }
 
     /**
-     * Fornece uma visualizacao grafica do mapa. Esta eh
-     * uma classe interna que define os componentes da GUI.
-     * Ela contém alguns detalhes mais avancados sobre GUI
-     * que voce pode ignorar para realizacao do seu trabalho.
+     * Fornece uma visualização gráfica do mapa. Esta é uma classe interna 
+     * que define os componentes da interface gráfica. 
+     * 
+     * Ela contém detalhes avançados sobre GUI, mas não é necessário entendê-los
+     * para o funcionamento do programa.
      */
     private class VisaoMapa extends JPanel {
 
@@ -64,6 +75,9 @@ public class JanelaSimulacao extends JFrame {
 
         /**
          * Cria um novo componente VisaoMapa.
+         * 
+         * @param largura A largura do mapa.
+         * @param altura A altura do mapa.
          */
         public VisaoMapa(int largura, int altura) {
             larguraMapa = largura;
@@ -73,17 +87,18 @@ public class JanelaSimulacao extends JFrame {
         }
 
         /**
-         * Informa para o gerenciador GUI o tamanho.
+         * Retorna o tamanho preferido da visualização do mapa.
+         * 
+         * @return As dimensões preferidas para a exibição.
          */
-
         public Dimension getPreferredSize() {
             return new Dimension(larguraMapa * VIEW_SCALING_FACTOR,
                     alturaMapa * VIEW_SCALING_FACTOR);
         }
 
         /**
-         * Prepara para um novo ciclo de exibicao. Uma vez que o componente
-         * pode ser redimensionado, calcula o "fator de escala" novamente.
+         * Prepara a área de exibição para um novo ciclo de renderização.
+         * Recalcula a escala caso a janela seja redimensionada.
          */
         public void preparePaint() {
             if (!tamanho.equals(getSize())) { // se o tamanho mudou...
@@ -111,17 +126,23 @@ public class JanelaSimulacao extends JFrame {
             }
         }
 
-        /**
-         * Desenha a imagem para um determinado item.
+         /**
+         * Desenha uma imagem em uma determinada posição do mapa.
+         * 
+         * @param x A posição X onde a imagem será desenhada.
+         * @param y A posição Y onde a imagem será desenhada.
+         * @param image A imagem a ser exibida.
          */
         public void desenharImagem(int x, int y, Image image) {
             g.drawImage(image, x * xScale + 1, y * yScale + 1,
                     xScale - 1, yScale - 1, this);
         }
 
-        /**
-         * O componente VisaoMapa precisa ser reexibido. Copia a
-         * imagem interna para a tela.
+         /**
+         * Atualiza a exibição do componente VisaoMapa.
+         * Copia a imagem interna para a tela.
+         * 
+         * @param g O contexto gráfico usado para desenhar.
          */
         public void paintComponent(Graphics g) {
             if (imagemMapa != null) {

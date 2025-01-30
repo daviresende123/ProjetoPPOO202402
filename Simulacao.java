@@ -2,6 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe responsável pela simulação de veículos em um mapa.
+ * 
+ * Esta classe realiza a simulação da movimentação de veículos, gerando novos veículos em intervalos de tempo e atualizando suas posições a cada passo.
+ * 
+ * @author Davi Gomides, João Ramalho, Eduardo Gomes
+ */
 public class Simulacao {
     private List<Veiculo> veiculos; // Lista de veículos ativos
     private JanelaSimulacao janelaSimulacao;
@@ -9,6 +16,9 @@ public class Simulacao {
     private Random rand;
     private int tempoParaNovoVeiculo; // Contador para gerar novos veículos
 
+     /**
+     * Construtor da classe Simulacao. Inicializa os elementos da simulação, como o mapa, a lista de veículos e a janela de visualização.
+     */
     public Simulacao() {
         rand = new Random();
         mapa = new Mapa();
@@ -19,12 +29,21 @@ public class Simulacao {
         adicionarPontosAbastecimento();
     }
 
+    /**
+     * Adiciona pontos de abastecimento no mapa em posições fixas.
+     * Este método insere pontos de abastecimento de forma simples, em posições predefinidas.
+     */
     private void adicionarPontosAbastecimento() {
         // Exemplo: Adiciona pontos de abastecimento em posições fixas
         for (int i = 1; i < 35; i = i + 2)
             mapa.adicionarPontoAbastecimento(new PontoAbastecimento(new Localizacao(i, 0)));
     }
 
+    /**
+     * Executa a simulação por um número determinado de passos.
+     * 
+     * @param numPassos O número de passos que a simulação deve executar.
+     */
     public void executarSimulacao(int numPassos) {
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
@@ -32,6 +51,9 @@ public class Simulacao {
         }
     }
 
+     /**
+     * Executa um único passo da simulação, que inclui a geração de novos veículos e a atualização da posição dos veículos existentes.
+     */
     private void executarUmPasso() {
         // Gera um novo veículo a cada segundo (10 passos, considerando 100 ms por
         // passo)
@@ -61,6 +83,10 @@ public class Simulacao {
         janelaSimulacao.executarAcao();
     }
 
+    /**
+     * Gera um novo veículo em uma posição aleatória do mapa.
+     * O novo veículo pode ser um {@link Carreto} ou um {@link Caminhao}, selecionado aleatoriamente.
+     */
     private void gerarNovoVeiculo() {
         int largura = mapa.getLargura();
         int altura = mapa.getAltura();
@@ -87,6 +113,11 @@ public class Simulacao {
         mapa.adicionarItem(novoVeiculo);
     }
 
+    /**
+     * Pausa a execução por um determinado número de milissegundos.
+     * 
+     * @param milisegundos O número de milissegundos para esperar.
+     */
     private void esperar(int milisegundos) {
         try {
             Thread.sleep(milisegundos);

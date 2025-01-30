@@ -1,15 +1,13 @@
-import java.util.Random;
-
 /**
  * Representa uma localização no mapa
- * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * @author David J.
+ * Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Localizacao {
     private int x;
     private int y;
-    private static Random rand = new Random();
     
-    /**
+     /**
      * Representa uma localização na cidade
      * @param x Coordenada x: deve ser maior ou igual a 0.
      * @param y Coordenada y: deve ser maior ou igual a 0.
@@ -28,10 +26,9 @@ public class Localizacao {
     }
     
     /**
-     * Gera a localizacao para se mover visando alcançar o destino
-     * @param localizacaoDestino: localizacao que se deseja alcancar.
-     * @return Localizacao para onde se deve ir
-     * @DaviGomides Alterei para que movesse apenas no eixo Y
+     * Gera a próxima localização movendo apenas no eixo Y
+     * @param localizacaoDestino Localização destino
+     * @return Nova localização ajustada no eixo Y
      */
     public Localizacao proximaLocalizacao(Localizacao localizacaoDestino) {
         if (localizacaoDestino.equals(this)) { // Verifica se já alcançou o destino
@@ -44,9 +41,8 @@ public class Localizacao {
     }
     
     /**
-     * Verificacao de igualdade de conteudo de objetos do tipo Localizacao.
-     * @return true: se a localizacao é igual.
-     *         false: caso contrario.
+     * Verifica a igualdade de duas localizações.
+     * @return true se as coordenadas forem iguais, false caso contrário.
      */
     @Override
     public boolean equals(Object obj){
@@ -61,7 +57,8 @@ public class Localizacao {
     }
     
     /**
-     * @return A representacao da localizacao.
+     * Representação textual da localização
+     * @return String formatada com as coordenadas
      */
     @Override
     public String toString()

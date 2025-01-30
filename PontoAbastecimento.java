@@ -10,6 +10,12 @@ public class PontoAbastecimento {
     private Localizacao localizacao;
     private Image imagem;
 
+    /**
+     * Constrói um ponto de abastecimento em uma localização específica.
+     * 
+     * @param localizacao Localização do ponto de abastecimento (não pode ser null).
+     * @throws IllegalArgumentException se a localização for null.
+     */
     public PontoAbastecimento(Localizacao localizacao) {
         this.localizacao = localizacao;
         this.imagem = new ImageIcon(getClass().getResource("Imagens/ponto.png")).getImage();

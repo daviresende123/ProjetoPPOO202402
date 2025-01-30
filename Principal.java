@@ -1,4 +1,5 @@
 /**
+ * Classe principal para iniciar a simulação.
  *
  * @author Luiz Merschmann
  */

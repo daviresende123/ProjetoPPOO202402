@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Representa um mapa com todos os itens que participam da simulacao
+ * Representa um mapa com todos os itens que participam da simulação.
  * 
- * @author David J. Barnes and Michael Kolling and Luiz Merschmann
+ * @author David J. Barnes, Michael Kolling e Luiz Merschmann
  */
 public class Mapa {
     private Veiculo[][] itens;
@@ -16,10 +16,10 @@ public class Mapa {
     private static final int ALTURA_PADRAO = 35;
 
     /**
-     * Cria mapa para alocar itens da simulacao.
+     * Cria mapa para alocar itens da simulação.
      * 
-     * @param largura: largura da área de simulacao.
-     * @param altura:  altura da área de simulação.
+     * @param largura Largura da área de simulação (deve ser maior que 0).
+     * @param altura  Altura da área de simulação (deve ser maior que 0).
      */
     public Mapa(int largura, int altura) {
         this.largura = largura;
@@ -37,7 +37,7 @@ public class Mapa {
     }
 
     /**
-     * Cria mapa com tamanho padrao.
+     * Cria mapa com tamanho padrão.
      */
     public Mapa() {
         this(LARGURA_PADRAO, ALTURA_PADRAO);
